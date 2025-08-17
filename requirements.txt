@@ -1,0 +1,9 @@
+transformers
+torch
+accelerate
+torchvision
+pillow
+numpy
+paddlepaddle
+paddleocr
+qwen-vl-utils
