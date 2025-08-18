@@ -9,7 +9,8 @@ def run_step(title: str, script_path: str, env_overrides: dict | None = None) ->
     env = os.environ.copy()
     if env_overrides:
         env.update({k: str(v) for k, v in env_overrides.items() if v is not None})
-    subprocess.run([sys.executable, script_path], check=True, env=env)
+    # Run each step from its script directory to ensure relative paths inside scripts work
+    subprocess.run([sys.executable, script_path], check=True, env=env, cwd=os.path.dirname(script_path))
 
 
 def main() -> None:
@@ -90,6 +91,12 @@ def main() -> None:
 
     # 7) Merge CSVs
     run_step("Merging CSV files", os.path.join(base_dir, "merge_the_csv.py"))
+
+    # 8) Validate and normalize license plates using regex (final stage)
+    run_step(
+        "Validating and normalizing license plates (regex)",
+        os.path.join(base_dir, "ReGEX.py"),
+    )
 
     print("\nPipeline complete.")
 

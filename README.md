@@ -10,6 +10,7 @@ This pipeline crops license plates from images, classifies cropped images into c
 - `Qwen_api_autolabelling.py`: runs Qwen-VL on bad images
 - `Sort_the_csv.py`: sorts all CSVs
 - `merge_the_csv.py`: merges the CSVs into one file
+- `ReGEX.py`: validates and normalizes merged license plate strings, producing `corrected_license_plates.csv` and `rejected_license_plates.csv`
 - `main.py`: orchestrates the full pipeline
 
 ### Setup
@@ -62,11 +63,14 @@ Outputs created in `ANPR_pipeline`:
 - `moondream.csv`
 - `qwen_bad_license_plate_results.csv`
 - `merged_license_plate_results.csv`
+- `corrected_license_plates.csv`
+- `rejected_license_plates.csv`
 
 ### Notes
 - Ensure you have CUDA or MPS if using GPU acceleration.
 - Moondream and Qwen-VL will download models on first run.
 - Plate Recognizer requires a valid API token.
+- The final stage `ReGEX.py` is run automatically by `main.py` and reads `merged_license_plate_results.csv` from the same directory, emitting corrected and rejected CSVs.
 
 ### Using environment files
 - Copy `example.env` to `.env` and update values:
